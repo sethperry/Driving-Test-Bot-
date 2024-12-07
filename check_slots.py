@@ -4,6 +4,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from webdriver_manager.chrome import ChromeDriverManager
 from datetime import datetime, timedelta
 import requests
 import os
@@ -14,9 +15,6 @@ CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 LICENCE_NUMBER = os.environ.get("LICENCE_NUMBER")
 CONTACT_NAME = os.environ.get("CONTACT_NAME")
 CONTACT_PHONE = os.environ.get("CONTACT_PHONE")
-
-# Path to ChromeDriver (local testing only, adjust for GitHub Actions if needed)
-CHROME_DRIVER_PATH = r"C:\Users\datgu\OneDrive\Desktop\Chrome\chromedriver-win64\chromedriver.exe"
 
 def send_telegram_notification(slot_time):
     message_text = f"Earlier slot available within 14 days: {slot_time.strftime('%A, %d %B %Y %I:%M %p')}"
@@ -33,11 +31,11 @@ def send_telegram_notification(slot_time):
         print("Failed to send Telegram notification. Status code:", response.status_code)
 
 options = Options()
-# If you prefer not seeing the browser window, uncomment the next line:
+# Uncomment the line below to run in headless mode (no browser window)
 # options.add_argument("--headless")
 
-service = Service(CHROME_DRIVER_PATH)
-driver = webdriver.Chrome(service=service, options=options)
+# Use webdriver-manager to handle ChromeDriver setup
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
 # Set a default wait time (in seconds)
 wait = WebDriverWait(driver, 10)
