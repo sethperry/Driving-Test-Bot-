@@ -1,0 +1,31 @@
+name: Run Driving Test Check Hourly
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs at the start of every hour
+  workflow_dispatch:  # Lets you manually trigger the workflow
+
+jobs:
+  run-check:
+    runs-on: ubuntu-latest
+    env:
+      TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      LICENCE_NUMBER: ${{ secrets.LICENCE_NUMBER }}
+      CONTACT_NAME: ${{ secrets.CONTACT_NAME }}
+      CONTACT_PHONE: ${{ secrets.CONTACT_PHONE }}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          pip install selenium requests webdriver-manager
+
+      - name: Run the script
+        run: python check_slots.py
