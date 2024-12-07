@@ -144,6 +144,3 @@ try:
 
 finally:
     driver.quit()
-
-# Keeps the console window open if you double-click this file
-input("Press Enter to close...")
