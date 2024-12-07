@@ -31,8 +31,10 @@ def send_telegram_notification(slot_time):
         print("Failed to send Telegram notification. Status code:", response.status_code)
 
 options = Options()
-# Uncomment the line below to run in headless mode (no browser window)
-# options.add_argument("--headless")
+# Enable headless mode for Chrome
+options.add_argument("--headless")
+options.add_argument("--no-sandbox")
+options.add_argument("--disable-dev-shm-usage")
 
 # Use webdriver-manager to handle ChromeDriver setup
 driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
